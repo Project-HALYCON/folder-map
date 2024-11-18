@@ -18,7 +18,12 @@ const commonOptions = (command) => {
     .option("-o, --output <filename>", "Output file name")
     .option("-d, --depth <number>", "Maximum depth to traverse", parseInt)
     .option("-s, --size", "Include file sizes in the output", false)
-    .option("-f, --format <type>", "Output format (md or txt)", "md");
+    .option("-f, --format <type>", "Output format (md or txt)", "md")
+    .option(
+      "--include-sys-files",
+      "Include system files and directories (.git, .next, etc.)",
+      false
+    );
 };
 
 commonOptions(
@@ -36,6 +41,7 @@ commonOptions(
     maxDepth: options.depth || Infinity,
     showSize: options.size,
     format: format,
+    includeSysFiles: options.includeSysFiles,
   });
   fs.writeFileSync(outputFile, output);
   console.log(`Structure has been written to ${outputFile}`);
@@ -56,6 +62,7 @@ commonOptions(
     maxDepth: options.depth || Infinity,
     showSize: options.size,
     format: format,
+    includeSysFiles: options.includeSysFiles,
   });
   fs.writeFileSync(outputFile, output);
   console.log(`Structure with code has been written to ${outputFile}`);

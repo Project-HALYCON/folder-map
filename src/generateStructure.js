@@ -10,16 +10,62 @@ export async function generateStructure(
     maxDepth: Infinity,
     showSize: false,
     format: "md",
+    includeSysFiles: false,
   }
 ) {
-  const defaultIgnore = [
-    "node_modules/**",
-    ".git/**",
-    "dist/**",
-    "build/**",
-    ".DS_Store",
-    "*.log",
-  ];
+  const defaultIgnore = options.includeSysFiles
+    ? []
+    : [
+        // Build and cache directories
+        "node_modules/**",
+        ".next/**",
+        "dist/**",
+        "build/**",
+        ".cache/**",
+        "out/**",
+        ".output/**",
+        ".nuxt/**",
+        ".svelte-kit/**",
+
+        // Version control
+        ".git/**",
+        ".svn/**",
+        ".hg/**",
+
+        // Package managers
+        ".yarn/**",
+        ".pnpm/**",
+        "yarn.lock",
+        "package-lock.json",
+        "pnpm-lock.yaml",
+
+        // Environment and config files
+        ".env*",
+        ".env.local",
+        ".env.*.local",
+
+        // IDE and editor files
+        ".vscode/**",
+        ".idea/**",
+        "*.swp",
+        "*.swo",
+
+        // OS files
+        ".DS_Store",
+        "Thumbs.db",
+
+        // Logs
+        "*.log",
+        "logs/**",
+
+        // Test coverage
+        "coverage/**",
+        ".nyc_output/**",
+
+        // Temporary files
+        "tmp/**",
+        "temp/**",
+      ];
 
   const ignore = createIgnore([
     ...defaultIgnore,
@@ -28,7 +74,6 @@ export async function generateStructure(
   let output = "";
   let fileContents = [];
 
-  // Initialize output based on format
   if (options.format === "md") {
     output += "# Project Structure\n\n";
     output += "## Directory Tree\n\n";
@@ -112,7 +157,6 @@ export async function generateStructure(
     output += `Total Size: ${formatFileSize(stats.totalSize)}\n`;
     output += "```\n";
   } else {
-    // For text format, just add a simple separator before statistics
     if (options.includeCode && fileContents.length > 0) {
       output += "\nFile Contents:\n\n";
       fileContents.forEach((file) => {

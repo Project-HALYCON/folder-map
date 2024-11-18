@@ -1,6 +1,6 @@
 # @project-halycon/folder-map
 
-A CLI tool by HALYCON that generates markdown documentation of your project's folder structure. Perfect for documenting project architecture or creating README files, especially useful for sharing with AI tools like ChatGPT.
+A powerful command-line tool by HALYCON that generates markdown documentation of your project's folder structure. Perfect for documenting project architecture or creating README files, especially useful for sharing with AI tools like ChatGPT.
 
 ## Features
 
@@ -14,8 +14,8 @@ A CLI tool by HALYCON that generates markdown documentation of your project's fo
 - Directory statistics
 - Sorted output (directories first, then files)
 - Syntax highlighting for code blocks
+- Smart system files handling
 - Easy-to-use CLI interface
-- AI-friendly output formatting
 
 ## Installation
 
@@ -46,7 +46,7 @@ This will create an output file with your folder structure in the specified form
 
 ## Directory Tree
 
-project/
+my-project/
 ├── src/
 │   ├── components/
 │   │   └── Button.js (2.5 KB)
@@ -79,24 +79,71 @@ folder-map structure-with-code [options]   Generate folder structure with file c
 
 ### Options
 
-- `-i, --ignore <patterns...>` - Patterns to ignore (e.g., "node\*modules/\*\*" "\_.log")
+- `-i, --ignore <patterns...>` - Patterns to ignore (e.g., "node_modules/\*_" "_.log")
 - `-o, --output <filename>` - Custom output file name (default: "output.md")
 - `-d, --depth <number>` - Maximum depth to traverse
 - `-s, --size` - Include file sizes in the output
 - `-f, --format <type>` - Output format: 'md' or 'txt' (default: 'md')
+- `--include-sys-files` - Include system files and directories (.git, .next, etc.)
 - `-v, --version` - Output the version number
 - `-h, --help` - Display help for command
 
 ## Default Ignored Patterns
 
-The following patterns are ignored by default:
+By default, the following patterns are ignored (unless --include-sys-files is used):
+
+### Build and Cache
 
 - node_modules/\*\*
-- .git/\*\*
+- .next/\*\*
 - dist/\*\*
 - build/\*\*
+- .cache/\*\*
+- out/\*\*
+- .output/\*\*
+- .nuxt/\*\*
+- .svelte-kit/\*\*
+
+### Version Control
+
+- .git/\*\*
+- .svn/\*\*
+- .hg/\*\*
+
+### Package Managers
+
+- .yarn/\*\*
+- .pnpm/\*\*
+- yarn.lock
+- package-lock.json
+- pnpm-lock.yaml
+
+### Environment and Config
+
+- .env\*
+- .env.local
+- .env.\*.local
+
+### IDE and Editor
+
+- .vscode/\*\*
+- .idea/\*\*
+- \*.swp
+- \*.swo
+
+### System Files
+
 - .DS_Store
+- Thumbs.db
+
+### Other
+
 - \*.log
+- logs/\*\*
+- coverage/\*\*
+- .nyc_output/\*\*
+- tmp/\*\*
+- temp/\*\*
 
 ## Examples
 
@@ -117,6 +164,9 @@ folder-map structure -o project-structure.md
 
 # Generate in text format
 folder-map structure --format txt
+
+# Include system files
+folder-map structure --include-sys-files
 
 # Combine options
 folder-map structure-with-code -s -d 3 -o docs/structure.md -f md -i "node_modules/**" "*.test.js"
