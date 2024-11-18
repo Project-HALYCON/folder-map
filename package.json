@@ -1,6 +1,6 @@
 {
   "name": "@project-halycon/folder-map",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool to generate markdown documentation of folder structures with optional code content inclusion",
   "main": "src/index.js",
   "bin": {
